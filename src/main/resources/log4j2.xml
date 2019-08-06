@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <properties>
+        <property name="defaultPattern">%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %p (%F:%line) %traceId # %m%n</property>
+        <property name="logDir">logs</property>
+    </properties>
+
+    <Appenders>
+
+        <Console name="STDOUT" target="SYSTEM_OUT">
+            <PatternLayout pattern="${defaultPattern}"/>
+        </Console>
+
+        <RollingFile name="RootAppender" filePattern="${logDir}/root-%d{yyyy-MM-dd}-%i.log.gz" fileName="${logDir}/root.log" >
+            <PatternLayout>
+                <Pattern>${defaultPattern}</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="1024MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
+        </RollingFile>
+
+    </Appenders>
+
+    <Loggers>
+
+        <Root level="INFO">
+            <AppenderRef ref="STDOUT"/>
+            <AppenderRef ref="RootAppender"/>
+        </Root>
+
+    </Loggers>
+
+</Configuration>
