@@ -1,13 +1,13 @@
 package ${groupId}.controller;
 
-import ${groupId}.service.${nameUpper}Service;
+import ${groupId}.service.${table.className}Service;
 
 import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 import lombok.extern.slf4j.Slf4j;
 
  /**
- * ${nameUpper} 控制器类
+ * ${table.className} 控制器类
  * 
  * @author ${author}
  * @version 1.0.0
@@ -16,11 +16,11 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @RestController
-@RequestMapping("/${nameLower}")
-public class ${nameUpper}Controller {
+@RequestMapping("/${table.lowerClassName}")
+public class ${table.className}Controller {
 
 	@Resource
-	private ${nameUpper}Service ${nameLower}Service;
+	private ${table.className}Service ${table.lowerClassName}Service;
 
     @PostMapping("/dealBusiness")
     public BaseResult dealBusiness() {

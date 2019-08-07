@@ -20,7 +20,10 @@ public class ContextBody implements ResponseBodyAdvice {
     public Object beforeBodyWrite(Object object, MethodParameter methodParameter,
                                   MediaType mediaType, Class aClass,
                                   ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
-        if (object instanceof BaseResult) {
+        String url = serverHttpRequest.getURI().getPath();
+        if (url.contains("actuator") || url.contains("shutdown") || url.contains("health")){
+            ContextThread.buildContext(BaseResult.buildSuccess(object));
+        } else if (object instanceof BaseResult) {
             ContextThread.buildContext((BaseResult) object);
         } else {
             throw new RuntimeException("The format of the response content does not conform to the specification");

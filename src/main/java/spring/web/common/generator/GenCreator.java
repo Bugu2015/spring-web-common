@@ -3,11 +3,11 @@ package spring.web.common.generator;
 import com.google.common.collect.Maps;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.util.ClassUtils;
 import spring.web.common.utils.DateU;
 import spring.web.common.utils.FreeMarker;
 import spring.web.common.utils.StringU;
 
+import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -15,8 +15,6 @@ import java.util.Map;
 public class GenCreator {
 
     private static final Log log = LogFactory.getLog(GenCreator.class);
-
-    private static final String root = ClassUtils.getDefaultClassLoader().getResource("").getPath() + "/ftl";
 
     public static boolean isDao = true;
     private static final String dao = "dao.ftl";
@@ -42,10 +40,10 @@ public class GenCreator {
 
     private static final String sqlQueryTable = "select table_name,table_comment from " +
             "information_schema.tables where table_schema = '%s'";
-    private static final String sqlQueryField = "select column_name,date_type,column_comment from " +
+    private static final String sqlQueryField = "select column_name,data_type,column_comment from " +
             "information_schema.`columns` where table_name = '%s' and table_schema = '%s'";
 
-    public Map<String, Object> build(String groupId, String addTimeName, String tableSchema,
+    public static Map<String, Object> build(String groupId, String addTimeName, String tableSchema,
                                      ExecuteTable executeTable, ExecuteField executeField, FileHandler fileHandler){
         Map<String, Object> map = Maps.newHashMap();
         map.put("lf", "{");
@@ -80,30 +78,45 @@ public class GenCreator {
             map.put("list", list);
 
             if (isDao) {
-                fileHandler.save(FreeMarker.renderByPath(root, dao, map),
+                fileHandler.save(FreeMarker.renderByContent(getContent(dao), map),
                         StringU.join(genTable.getClassName(), jDao));
             }
             if (isModel) {
-                fileHandler.save(FreeMarker.renderByPath(root, model, map),
+                fileHandler.save(FreeMarker.renderByContent(getContent(model), map),
                         StringU.join(genTable.getClassName(), jModel));
             }
             if (isMapper) {
-                fileHandler.save(FreeMarker.renderByPath(root, mapper, map),
+                fileHandler.save(FreeMarker.renderByContent(getContent(mapper), map),
                         StringU.join(genTable.getClassName(), jMapper));
             }
             if (isService) {
-                fileHandler.save(FreeMarker.renderByPath(root, service, map),
+                fileHandler.save(FreeMarker.renderByContent(getContent(service), map),
                         StringU.join(genTable.getClassName(), jService));
-                fileHandler.save(FreeMarker.renderByPath(root, serviceImpl, map),
+                fileHandler.save(FreeMarker.renderByContent(getContent(serviceImpl), map),
                         StringU.join(genTable.getClassName(), jServiceImpl));
             }
             if (isController) {
-                fileHandler.save(FreeMarker.renderByPath(root, controller, map),
+                fileHandler.save(FreeMarker.renderByContent(getContent(controller), map),
                         StringU.join(genTable.getClassName(), jController));
             }
 
         }
         return map;
+    }
+
+    public static String getContent(String ftl) {
+        StringBuffer sb = new StringBuffer();
+        try {
+            InputStream is = GenCreator.class.getResourceAsStream("/ftl/" + ftl);
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            String s;
+            while ((s = br.readLine()) != null) {
+                sb.append(s+"\n");
+            }
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
+        return sb.toString();
     }
 
 }
