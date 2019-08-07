@@ -1,7 +1,10 @@
-package spring.web.common;
+package spring.web.common.base;
 
 import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
+import spring.web.common.enums.AppEnum;
+import spring.web.common.enums.BaseEnum;
+import spring.web.common.context.ContextThread;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -52,6 +55,9 @@ public class BaseResult implements Serializable {
     }
 
     public static BaseResult buildFailure(Object data){
+        if (data instanceof String) {
+            return newInstance(AppEnum.FAILURE.getCode(), (String) data, false, null);
+        }
         return newInstance(AppEnum.FAILURE, false, data);
     }
 

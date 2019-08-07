@@ -1,9 +1,11 @@
-package spring.web.common;
+package spring.web.common.context;
 
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import spring.web.common.base.BaseResult;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,6 +25,8 @@ public class ContextThread {
     public final static InheritableThreadLocal<Map> paramContext = new InheritableThreadLocal<>();
 
     public final static InheritableThreadLocal<Map> headerContext = new InheritableThreadLocal<>();
+
+    public final static InheritableThreadLocal<BaseResult> resultContext = new InheritableThreadLocal<>();
 
     public static void buildContext(HttpServletRequest request, HttpServletResponse response){
         Map<String, String> param = new HashMap<>(16);
@@ -59,12 +63,20 @@ public class ContextThread {
         ContextThread.traceId.set(request.getParameter("_trace"));
     }
 
+    public static void buildContext(BaseResult baseResult){
+        ContextThread.resultContext.set(baseResult);
+    }
+
     public static String getRequestParam(){
-        return JSONObject.toJSONString(paramContext.get());
+        return JSONObject.toJSONString(paramContext.get(), SerializerFeature.WriteMapNullValue);
     }
 
     public static String getHeaderParam(){
-        return JSONObject.toJSONString(headerContext.get());
+        return JSONObject.toJSONString(headerContext.get(), SerializerFeature.WriteMapNullValue);
+    }
+
+    public static String getResult(){
+        return JSONObject.toJSONString(resultContext.get(), SerializerFeature.WriteMapNullValue);
     }
 
 }

@@ -1,4 +1,4 @@
-package spring.web.common;
+package spring.web.common.context;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -21,11 +21,14 @@ public class ContextFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        long s = System.currentTimeMillis();
         ContextThread.buildContext((HttpServletRequest) request, (HttpServletResponse) response);
         log.info("Url: " + ((HttpServletRequest) request).getRequestURI());
         log.info("Headers: " + ContextThread.getHeaderParam());
         log.info("Params: " + ContextThread.getRequestParam());
         chain.doFilter(request, response);
+        log.info("Result: " + ContextThread.getResult());
+        log.info("Time: " + (System.currentTimeMillis()-s));
     }
 
     @Override

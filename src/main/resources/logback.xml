@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <conversionRule conversionWord="msg" converterClass="spring.web.common.LogBackConverter" />
+    <conversionRule conversionWord="msg" converterClass="spring.web.common.logging.LogBackConverter" />
 
     <property name="LOG_HOME" value="logs" />
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">

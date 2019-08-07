@@ -1,10 +1,11 @@
-package spring.web.common;
+package spring.web.common.logging;
 
 import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.config.plugins.Plugin;
 import org.apache.logging.log4j.core.pattern.ConverterKeys;
 import org.apache.logging.log4j.core.pattern.LogEventPatternConverter;
 import org.apache.logging.log4j.core.pattern.PatternConverter;
+import spring.web.common.context.ContextThread;
 
 @ConverterKeys({"traceId"})
 @Plugin(name = "logConverter", category = PatternConverter.CATEGORY)

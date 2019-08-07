@@ -1,4 +1,4 @@
-package spring.web.common;
+package spring.web.common.base;
 
 import lombok.Data;
 
