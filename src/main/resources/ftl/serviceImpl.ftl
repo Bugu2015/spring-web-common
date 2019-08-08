@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service("${table.lowerClassName}Service")
-public class ${table.className}ServiceImpl extends BaseServiceImpl<${table.className}> implements ${table.className}Service {
+public class ${table.className}ServiceImpl extends BaseServiceImpl<${table.className}> implements ${table.className}Service<${table.className}> {
 
     @Resource
     private ${table.className}Mapper ${table.lowerClassName}Mapper;
