@@ -3,7 +3,7 @@ package ${groupId}.service.impl;
 import ${groupId}.service.${table.className}Service;
 import ${groupId}.dao.${table.className}Mapper;
 import ${groupId}.beans.domain.${table.className};
-import ${groupId}.base.BaseServiceImpl;
+import spring.web.common.base.BaseServiceImpl;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author ${author}
  * @version 1.0.0
  * @date ${date}
- * Copyright 都市E呗
+ * @copyright 版权所有©2019 请勿外泄或私自进行商业用途
  */
 
 @Slf4j

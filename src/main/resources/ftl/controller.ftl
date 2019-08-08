@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author ${author}
  * @version 1.0.0
  * @date ${date}
- * Copyright 都市E呗
+ * @copyright 版权所有©2019 请勿外泄或私自进行商业用途
  */
 @Slf4j
 @RestController
