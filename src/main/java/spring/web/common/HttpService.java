@@ -7,24 +7,22 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.Resource;
 import java.util.Map;
 
-@Service
+@Component
 public class HttpService {
 
     private static final Log log = LogFactory.getLog(HttpService.class);
 
-    private final RestTemplate restTemplate;
-
-    @Autowired
-    HttpService(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
-    }
+    @Resource
+    RestTemplate restTemplate;
 
     public <T> T doGet(String url, Class<T> cls){
         return invoke(HttpMethod.GET, url, Maps.newHashMap(), Maps.newHashMap(), cls);

@@ -3,7 +3,9 @@ package spring.web.common.generator;
 import org.apache.commons.io.FileUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -14,10 +16,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+@Component
 public class MysqlGenerator {
 
     public void generator(JdbcTemplate jdbcTemplate,
-                   String groupId, String addTime, String dbName,
+                   String groupId, String addTime, String dbName, String prefix,
                    boolean isDao, boolean isModel, boolean isMapper, boolean isService, boolean isController){
 
         GenCreator.isDao = isDao;
@@ -40,7 +43,8 @@ public class MysqlGenerator {
                 });
                 Map<String, String> map = new HashMap<>();
                 for (String[] li:list) {
-                    map.put(li[0], li[1]);
+                    if (li[0].startsWith(prefix))
+                        map.put(li[0], li[1]);
                 }
                 return map;
             }

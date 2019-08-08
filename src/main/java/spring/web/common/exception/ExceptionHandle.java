@@ -6,6 +6,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.BeanCreationNotAllowedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import spring.web.common.base.BaseResult;
 
+@Component
 @ControllerAdvice
 public class ExceptionHandle {
 

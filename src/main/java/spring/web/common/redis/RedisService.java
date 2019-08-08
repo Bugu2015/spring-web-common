@@ -1,35 +1,32 @@
 package spring.web.common.redis;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.BoundHashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-@Slf4j
-@SuppressWarnings("unchecked")
-@Service("redisService")
+@Component
 public class RedisService {
 
-    private final RedisTemplate redisTemplate;
+    private static final Log log = LogFactory.getLog(RedisTemplate.class);
 
-    private final StringRedisTemplate stringRedisTemplate;
+    @Resource
+    RedisTemplate redisTemplate;
 
-    @Autowired
-    RedisService(RedisTemplate redisTemplate, StringRedisTemplate stringRedisTemplate){
-        this.redisTemplate = redisTemplate;
-        this.stringRedisTemplate = stringRedisTemplate;
-    }
+    @Resource
+    StringRedisTemplate stringRedisTemplate;
 
     private static final long FOREVER = 0;
     private static final long ONE_SECOND = 1;
@@ -124,7 +121,7 @@ public class RedisService {
      * @return
      */
     public synchronized boolean tryLock(String lockKey, long timeout) {
-        log.debug("tryLock lockKey:{} timeout:{}", lockKey, timeout);
+        log.debug(String.format("tryLock lockKey:%s timeout:%s", lockKey, timeout));
         try {
             long tryTimeout = TimeUnit.SECONDS.toMillis(timeout);
             while (tryTimeout >= 0) {
@@ -134,11 +131,11 @@ public class RedisService {
                 }
                 long sleepTime = (long) (Math.random()*1000);
                 tryTimeout -= sleepTime;
-                log.info("getLock reTry lockKey:{} timeout:{}", lockKey, tryTimeout);
+                log.info(String.format("getLock reTry lockKey:%s timeout:%s", lockKey, tryTimeout));
                 Thread.sleep(sleepTime);
             }
         } catch (InterruptedException e) {
-            log.error("getLock error lockKey:{} error:{}", lockKey, e.getMessage(), e);
+            log.error(String.format("getLock error lockKey:%s error:%s", lockKey, e.getMessage()), e);
         }
         return false;
     }
@@ -158,7 +155,7 @@ public class RedisService {
             return success;
         });
         if (obj == null){
-            log.info("setNX error, key:{}", key);
+            log.info(String.format("setNX error, key:%s", key));
             return false;
         }
         return (Boolean) obj;
